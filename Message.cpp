@@ -3,3 +3,32 @@
 //
 
 #include "Message.h"
+
+Message::Message(const std::string &message, User &sender) : text(message), sender(sender),
+                                                             timestamp(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())){}
+
+std::string Message::toString() {
+    return std::ctime(&timestamp) + sender.getUsername() + " says: " + text + "\n";
+}
+
+const std::string &Message::getMessage() const {
+    return text;
+}
+
+User &Message::getSender() const {
+    return sender;
+}
+
+time_t Message::getTimestamp() const {
+    return timestamp;
+}
+
+bool Message::operator==(const Message &rhs) const {
+    return text == rhs.text &&
+           sender == rhs.sender &&
+           timestamp == rhs.timestamp;
+}
+
+bool Message::operator!=(const Message &rhs) const {
+    return !(rhs == *this);
+}
