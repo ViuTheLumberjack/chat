@@ -12,7 +12,7 @@
 
 class Message {
 public:
-    Message(const std::string &message, User &sender);
+    Message(const std::string &message, User &sender, bool read = false);
 
     bool operator==(const Message &rhs) const;
     bool operator!=(const Message &rhs) const;
@@ -20,10 +20,13 @@ public:
     const std::string &getMessage() const;
     User& getSender() const;
     time_t getTimestamp() const;
+    bool isRead() const;
+    void setRead(bool read);
 
     std::string toString();
 
 private:
+    bool read;
     std::string text;
     User& sender;
     time_t timestamp;

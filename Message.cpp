@@ -4,8 +4,9 @@
 
 #include "Message.h"
 
-Message::Message(const std::string &message, User &sender) : text(message), sender(sender),
-                                                             timestamp(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())){}
+Message::Message(const std::string &message, User &sender, bool read) : text(message), sender(sender),
+                                                             timestamp(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())),
+                                                             read(read) {}
 
 std::string Message::toString() {
     return std::ctime(&timestamp) + sender.getUsername() + " says: " + text + "\n";
@@ -22,6 +23,15 @@ User &Message::getSender() const {
 time_t Message::getTimestamp() const {
     return timestamp;
 }
+
+bool Message::isRead() const {
+    return read;
+}
+
+void Message::setRead(bool read) {
+    Message::read = read;
+}
+
 
 bool Message::operator==(const Message &rhs) const {
     return text == rhs.text &&

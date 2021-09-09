@@ -8,9 +8,9 @@
 class ChatTest : public ::testing::Test {
 protected:
     virtual void SetUp() {
-        c1.addMessage( {"Ciao", u1} );
-        c1.addMessage( {"Ciao!", u2} );
-        c1.addMessage( {"Wela", u3} );
+        ASSERT_NO_THROW(c1.addMessage( {"Ciao", u1} ));
+        ASSERT_NO_THROW(c1.addMessage( {"Ciao!", u2} ));
+        ASSERT_ANY_THROW(c1.addMessage( {"Wela", u3} ));
     }
 
     User u1 {"Älberto"};
@@ -29,4 +29,12 @@ TEST_F(ChatTest, StandardFunctionalities){
     c1.removeMessage({"Ciao", u1});
     n = c1.size();
     ASSERT_EQ(n, 1);
+}
+
+TEST_F(ChatTest, ReadMessage){
+    int n = c1.countUnread();
+    ASSERT_EQ(n, 2);
+    c1.readAll();
+    n = c1.countUnread();
+    ASSERT_EQ(n, 0);
 }
