@@ -14,9 +14,12 @@ class Register : public Observer{
 public:
     Register() = default;
 
+    bool operator==(const Observer &rhs) override;
+
     void addChat(Chat &chat);
     void removeChat(Chat &chat);
     size_t size();
+
 
     void update(const Message &msg) override;
 
@@ -26,6 +29,7 @@ public:
 
 private:
     std::list<Chat> buffer;
+
 };
 
 

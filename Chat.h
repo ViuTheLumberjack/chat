@@ -27,13 +27,15 @@ public:
     void readAll();
     int countUnread();
 
+    //updates this variable to test the observer
+    bool testMock = false;
     void notifyObservers(const Message &msg) override;
-    void attachObserver(const Observer &o) override;
-    void detachObserver(const Observer &o) override;
+    void attachObserver(Observer &o) override;
+    void detachObserver(Observer &o) override;
+
+    size_t getObserverNum();
 
     std::string toString();
-
-    ~Chat() override = default;
 
 private:
     std::pair<User, User> users;

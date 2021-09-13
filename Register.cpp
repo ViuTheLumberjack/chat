@@ -6,6 +6,10 @@
 #include <algorithm>
 #include <iostream>
 
+bool Register::operator==(const Observer &rhs) {
+    return static_cast<Observer>(*this) == rhs;
+}
+
 void Register::addChat(Chat &chat) {
     if(std::find(buffer.begin(), buffer.end(), chat) == buffer.end()){
         buffer.push_back(chat);

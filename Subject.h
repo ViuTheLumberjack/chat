@@ -10,12 +10,11 @@
 class Subject{
 public:
     virtual void notifyObservers(const Message &msg) = 0;
-    virtual void attachObserver(const Observer &o) = 0;
-    virtual void detachObserver(const Observer &o) = 0;
-    virtual ~Subject() = 0;
+    virtual void attachObserver(Observer &o) = 0;
+    virtual void detachObserver(Observer &o) = 0;
 
 protected:
-    std::list<Observer&> obs;
+    std::list<Observer> obs;
 };
 
 

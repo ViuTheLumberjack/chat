@@ -24,6 +24,8 @@ void Chat::addMessage(const Message &message) {
     if(u1 == message.getSender() || u2 == message.getSender())
         messages.push_back(message);
     else throw std::invalid_argument("Inserito Utente non appartenente alla chat");
+
+    notifyObservers(message);
 }
 
 void Chat::removeMessage(const Message &message) {
@@ -51,15 +53,22 @@ int Chat::countUnread(){
 }
 
 void Chat::notifyObservers(const Message &msg) {
-    std::for_each(obs.begin(), obs.end(), [=](Observer &o) { o.update(msg); });
+    testMock = !testMock;
+    for (auto observer : obs) {
+        observer.update(msg);
+    }
 }
 
-void Chat::attachObserver(const Observer &o) {
+void Chat::attachObserver(Observer &o) {
     obs.push_back(o);
 }
 
-void Chat::detachObserver(const Observer &o) {
+void Chat::detachObserver(Observer &o) {
     obs.remove(o);
+}
+
+size_t Chat::getObserverNum() {
+    return obs.size();
 }
 
 std::string Chat::toString(){
@@ -70,4 +79,3 @@ std::string Chat::toString(){
     }
     return dump;
 }
-

@@ -8,8 +8,9 @@
 
 class Observer {
 public:
-    virtual void update(const Message &msg) = 0;
-    virtual ~Observer() = 0;
+    virtual bool operator==(const Observer &rhs) { return typeid(*this) != typeid(rhs); };
+    virtual void update(const Message &msg) {};
+    virtual ~Observer() = default;
 };
 
 
