@@ -50,6 +50,17 @@ int Chat::countUnread(){
     return unreadMessages;
 }
 
+void Chat::notifyObservers(const Message &msg) {
+    std::for_each(obs.begin(), obs.end(), [=](Observer &o) { o.update(msg); });
+}
+
+void Chat::attachObserver(const Observer &o) {
+    obs.push_back(o);
+}
+
+void Chat::detachObserver(const Observer &o) {
+    obs.remove(o);
+}
 
 std::string Chat::toString(){
     std::string dump;
@@ -59,3 +70,4 @@ std::string Chat::toString(){
     }
     return dump;
 }
+

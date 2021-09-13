@@ -7,17 +7,22 @@
 
 #include "Chat.h"
 #include <list>
+#include "Observer.h"
 
 // could be a Singleton
-class Register {
+class Register : public Observer{
 public:
     Register() = default;
 
-    void addChat(const Chat &chat);
-    void removeChat(const Chat &chat);
+    void addChat(Chat &chat);
+    void removeChat(Chat &chat);
     size_t size();
 
+    void update(const Message &msg) override;
+
     std::string toString();
+
+    ~Register() override;
 
 private:
     std::list<Chat> buffer;

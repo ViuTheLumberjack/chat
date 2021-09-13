@@ -4,19 +4,29 @@
 
 #include "Register.h"
 #include <algorithm>
+#include <iostream>
 
-void Register::addChat(const Chat &chat) {
-    if(std::find(buffer.begin(), buffer.end(), chat) == buffer.end())
+void Register::addChat(Chat &chat) {
+    if(std::find(buffer.begin(), buffer.end(), chat) == buffer.end()){
         buffer.push_back(chat);
+        chat.attachObserver(*this);
+    }
 }
 
-void Register::removeChat(const Chat &chat) {
-    buffer.remove_if([=](auto to_remove) { return chat == to_remove; });
+void Register::removeChat(Chat &chat) {
+    buffer.remove_if([=](auto to_remove) {
+        if (chat == to_remove) to_remove.detachObserver(*this);
+        return chat == to_remove; });
 }
 
 size_t Register::size() {
     return buffer.size();
 }
+
+void Register::update(const Message &msg) {
+    std::cout<<"New Message from "<<msg.getSender().toString()<<std::endl;
+}
+
 
 std::string Register::toString() {
     std::string dump;
@@ -25,4 +35,10 @@ std::string Register::toString() {
         dump += obj.toString();
     }
     return dump;
+}
+
+Register::~Register() {
+    for (auto &obj : buffer) {
+        obj.detachObserver(*this);
+    }
 }
