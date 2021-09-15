@@ -6,24 +6,29 @@
 #include <algorithm>
 #include <iostream>
 
-bool Register::operator==(const Observer &rhs) {
-    return static_cast<Observer>(*this) == rhs;
-}
-
 void Register::addChat(Chat &chat) {
     if(std::find(buffer.begin(), buffer.end(), chat) == buffer.end()){
-        buffer.push_back(chat);
-        chat.attachObserver(*this);
+        chat.attachObserver(std::make_shared<Register>(*this));
+        buffer.emplace_back(chat);
     }
 }
 
 void Register::removeChat(Chat &chat) {
     buffer.remove_if([=](auto to_remove) {
-        if (chat == to_remove) to_remove.detachObserver(*this);
-        return chat == to_remove; });
+        if (chat == to_remove) to_remove.detachObserver(std::make_shared<Register>(*this));
+        return chat == to_remove;
+    });
 }
 
-size_t Register::size() {
+
+void Register::addMessage(const Message &msg, Chat &chat) {
+    auto place = std::find(buffer.begin(), buffer.end(), chat);
+    if(place != buffer.end()){
+        place->addMessage(msg);
+    }
+}
+
+size_t Register::size() const{
     return buffer.size();
 }
 
@@ -37,12 +42,7 @@ std::string Register::toString() {
     dump += " DATABASE \n\n";
     for(auto obj : buffer){
         dump += obj.toString();
+        dump += "-----------------\n\n";
     }
     return dump;
-}
-
-Register::~Register() {
-    for (auto &obj : buffer) {
-        obj.detachObserver(*this);
-    }
 }

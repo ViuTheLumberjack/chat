@@ -11,12 +11,12 @@ int main() {
     Chat c1 {std::make_pair(u1, u2)};
     Chat c2 {std::make_pair(u1, u3)};
 
-    c1.addMessage({"Yahallo!", u1});
-    c1.addMessage({"Ciaooo", u2});
-    c1.addMessage({"Ciaone", u3});
-
     r.addChat(c1);
     r.addChat(c2);
+
+    r.addMessage({"Yahallo!", u1}, c1);
+    r.addMessage({"Ciaooo", u2}, c1);
+    //c1.addMessage({"Ciaone", u3});
 
     std::cout << r.toString() << std::endl;
 

@@ -10,7 +10,7 @@ protected:
     virtual void SetUp() {
         ASSERT_NO_THROW(c1.addMessage( {"Ciao", u1} ));
         ASSERT_NO_THROW(c1.addMessage( {"Ciao!", u2} ));
-        ASSERT_ANY_THROW(c1.addMessage( {"Wela", u3} ));
+        ASSERT_THROW(c1.addMessage( {"Wela", u3} ), std::invalid_argument);
     }
 
     User u1 {"Älberto"};
@@ -21,7 +21,7 @@ protected:
     Chat c2 { std::make_pair(u1, u3)};
 };
 
-TEST_F(ChatTest, StandardFunctionalities){
+TEST_F(ChatTest, Size){
     size_t n = c1.size();
     ASSERT_EQ(n, 2);
     n = c2.size();

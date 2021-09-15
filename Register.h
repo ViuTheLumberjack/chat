@@ -5,6 +5,8 @@
 #ifndef CHAT_REGISTER_H
 #define CHAT_REGISTER_H
 
+class Chat;
+
 #include "Chat.h"
 #include <list>
 #include "Observer.h"
@@ -14,22 +16,19 @@ class Register : public Observer{
 public:
     Register() = default;
 
-    bool operator==(const Observer &rhs) override;
-
     void addChat(Chat &chat);
     void removeChat(Chat &chat);
-    size_t size();
-
+    void addMessage(const Message &msg, Chat &c);
+    size_t size() const;
 
     void update(const Message &msg) override;
 
     std::string toString();
 
-    ~Register() override;
+    ~Register() override = default;
 
 private:
     std::list<Chat> buffer;
-
 };
 
 
